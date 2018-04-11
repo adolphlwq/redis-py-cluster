@@ -73,10 +73,9 @@ class TestPipeline(object):
 
         with r.pipeline(transaction=False) as pipe:
             pipe.watch('a')
-            pipe.get('a')
             pipe.set('a', 2)
             pipe.set('b', 2)
-            assert pipe.execute() == [True, '0', True, True]
+            assert pipe.execute() == [True, True, True]
 
     # @pytest.mark.xfail(reason="unsupported command: watch")
     def test_pipeline_no_transaction_watch_failure(self, r):
