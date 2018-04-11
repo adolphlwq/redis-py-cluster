@@ -248,7 +248,7 @@ class StrictClusterPipeline(StrictRedisCluster):
         """
         """
         if not names:
-            raise RedisClusterException("MULTI command needs at least on name in this pipeline")
+            raise RedisClusterException("MULTI command needs at least one name in this pipeline")
 
         return self.execute_command('MULTI', *names)
 

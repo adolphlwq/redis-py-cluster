@@ -67,34 +67,26 @@ class TestPipeline(object):
             assert res[2] == b('first')
             assert res[3] == b('second')
 
-    @pytest.mark.xfail(reason="unsupported command: watch")
+    # @pytest.mark.xfail(reason="unsupported command: watch")
     def test_pipeline_no_transaction_watch(self, r):
         r['a'] = 0
 
         with r.pipeline(transaction=False) as pipe:
             pipe.watch('a')
-            a = pipe.get('a')
+            pipe.get('a')
+            pipe.set('a', 2)
+            pipe.set('b', 2)
+            assert pipe.execute() == [True, '0', True, True]
 
-            pipe.multi()
-            pipe.set('a', int(a) + 1)
-            assert pipe.execute() == [True]
-
-    @pytest.mark.xfail(reason="unsupported command: watch")
+    # @pytest.mark.xfail(reason="unsupported command: watch")
     def test_pipeline_no_transaction_watch_failure(self, r):
         r['a'] = 0
 
         with r.pipeline(transaction=False) as pipe:
             pipe.watch('a')
-            a = pipe.get('a')
-
+            pipe.get('a')
             r['a'] = 'bad'
-
-            pipe.multi()
-            pipe.set('a', int(a) + 1)
-
-            with pytest.raises(WatchError):
-                pipe.execute()
-
+            pipe.execute()
             assert r['a'] == b('bad')
 
     def test_exec_error_in_response(self, r):

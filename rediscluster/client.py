@@ -138,7 +138,7 @@ class StrictRedisCluster(StrictRedis):
         :max_connections:
             Maximum number of connections that should be kept open at one time
         :readonly_mode:
-            enable READONLY mode. You can read possibly stale data from slave.
+            enable READONLY mode. You can read possibly state data from slave.
         :skip_full_coverage_check:
             Skips the check of cluster-require-full-coverage config, useful for clusters
             without the CONFIG command (like aws)
